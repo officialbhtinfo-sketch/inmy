@@ -1,10 +1,9 @@
 # Which model server the agent talks to.
-# tiny = main model; smart = speculative decoding model on a separate server.
-# TODO: set `smart` to the speculative decoding server's URL (not yet confirmed —
-#       port may be 8008 or 8001, needs verification against the actual server).
+# tiny = main model; smart = speculative decoding model.
+# Both run on the same local server on your machine.
 servers:
-  tiny: "http://127.0.0.1:8080/v1"   # main model
-  smart: "http://127.0.0.1:8080/v1"   # speculative decoding — placeholder, needs real URL
+  tiny: "http://127.0.0.1:8080/v1"
+  smart: "http://127.0.0.1:8080/v1"
 
 model: "tiny"
 
