@@ -1,0 +1,5 @@
+openai>=1.50
+requests>=2.31
+PyYAML>=6
+pyautogui>=0.9.54
+playwright>=1.45

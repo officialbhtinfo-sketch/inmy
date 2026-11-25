@@ -1,0 +1,235 @@
+{
+  "project_opwin": {
+    "text": "Opwin.io website project at C:\\Users\\ActOnline\\y\\opwin (React+Vite client, Express+Drizzle+better-sqlite3 backend, data.db at project root). Dev server: npm run dev on port 5000 (Windows needs cross-env; reusePort disabled on win32). Business: tech consultations, 1 client/day, Pacific dates, CA-only online. Rates: pay $800 flat/$500 hr, quote $500 flat/$200 hr. Phone 252-876-3008, email admin@opwin.io. BTC payment needs BTC_ADDRESS env (not set yet; 503 fallback tells users to text). VPS: ubuntu@15.204.112.117 (NOT 15.204.117.112), static site at /var/www/opwin.io, handoff at /home/ubuntu/handoff/. Owner wants full backup before any server work.",
+    "tags": [
+      "project",
+      "opwin",
+      "website",
+      "deployment"
+    ],
+    "updated": "2026-11-21 00:29"
+  },
+  "project_opwin_rates_wallet": {
+    "text": "Opwin.io owner-confirmed (Nov 21 2026): quote/direct-scheduling hourly rate is $300 (not $200 — earlier agent had wrongly \"confirmed\" 200). Rates: pay $800 flat/$500 hr, quote $500 flat/$300 hr. Bitcoin receiving address set in .env (BTC_ADDRESS=bc1qc4mv5j5ujpepxj73uzer4vl4gcggexu5mwzqe6) — payment invoice flow verified working end-to-end locally.",
+    "tags": [
+      "project",
+      "opwin",
+      "rates",
+      "bitcoin"
+    ],
+    "updated": "2026-11-21 00:43"
+  },
+  "project_opwin_deploy": {
+    "text": "Opwin.io deployed to production Nov 21 2026: full Node app (Express+SQLite) running via systemd opwin.service on VPS 15.204.112.117, app dir \"/var/www/opwin.io/Opwin.io Website Backup\" (note the spaces), nginx proxies 443->localhost:5000. SSH from this PC works with key C:\\Users\\ActOnline\\.ssh\\ai_agent_key (id_ed25519 is rejected). Server .env has SESSION_SECRET + BTC_ADDRESS. Pre-deploy backups in /home/ubuntu/backups/ (webroot+nginx tarballs). Production data.db was empty before deploy. Deploy process: npm run build locally, scp dist/index.cjs + dist/public + package files, sudo systemctl restart opwin.service.",
+    "tags": [
+      "project",
+      "opwin",
+      "deployment",
+      "server"
+    ],
+    "updated": "2026-11-21 00:57"
+  },
+  "user_mac_m4": {
+    "text": "User's Mac (M4 Pro, 24GB) at 192.168.8.191 (LAN; Windows PC is 192.168.8.130), user \"me\", SSH enabled. Mac will host an agent running an LLM for the Opwin.io chat window (planned). Off-server Opwin backups: C:\\Users\\ActOnline\\opwin-backups\\ on PC, mirrored to /Users/me/opwin-backups/ on Mac. Daily sync via Windows scheduled task \"OpwinBackupSync\" (7:30 PM): VPS -> PC -> Mac; Mac credentials embedded in C:\\Users\\ActOnline\\opwin-backups\\_transfer\\push-to-mac.cjs (password changed to qqqq/ on Nov 21 2026).",
+    "tags": [
+      "user",
+      "mac",
+      "opwin",
+      "backups",
+      "llm-chat"
+    ],
+    "updated": "2026-11-21 01:39"
+  },
+  "mac_llm_ssd_project": {
+    "text": "User is setting up an LLM on an external SSD to plug into their Mac (llama.cpp + Llama-3.1-8B-Instruct Q4_K_M GGUF, persistent memory via memory.md system prompt + slot KV save/restore to SSD). They also previously wanted MediaMTX installed on the Mac to send a video feed via RTMP.",
+    "tags": [
+      "project",
+      "mac",
+      "llm",
+      "mediamtx"
+    ],
+    "updated": "2026-11-21 02:50"
+  },
+  "project_opwin_chatbot": {
+    "text": "Opwin.io chatbot integration completed. Modified App.tsx on Windows (C:\\Users\\ActOnline\\Documents\\Agent-Nemo\\opwin-dev\\App.tsx) and deployed to VPS (15.204.112.117). Changes: (1) Replaced keyword-based answer() with async LLM API call to http://127.0.0.1:9931/v1/chat/completions, (2) Added chatLoading state with Thinking... indicator, (3) Added specialties section (Cybersecurity, Audio & Video, AI & Virtual Assistants), (4) Updated disclaimer. Build succeeded on VPS, site running at HTTP 200. Test page at C:\\Users\\ActOnline\\Documents\\Agent-Nemo\\opwin-dev\\test_chat.html. LLM server on Windows at port 9931 (Nemotron 123B). Endpoint needs to be changed to Mac's IP when Mac is set up.",
+    "tags": [
+      "opwin",
+      "chatbot",
+      "website",
+      "llm",
+      "deployment"
+    ],
+    "updated": "2026-11-21 10:34"
+  },
+  "project_opwin_current": {
+    "text": "opwin.io website fully restored and updated. Changes: (1) Service areas dropdown in header with hover-triggered animated menu (Full stack web development, Cyber security, Audio video solutions, Local AI), (2) Clicking an option swaps calendar with description + close button, (3) Registration: Owner role removed, only Customer allowed, (4) After registration, users see profile page with \"Keeping you anonymous\" and free cybersecurity tools (DNS Leak Test, What's My IP, Background Check Removal - all disabled placeholders), (5) CSS: dropdown animates with fade/slide, rounded corners, heading-style font, black text. Site running at HTTP 200 on VPS 15.204.112.117.",
+    "tags": [
+      "opwin",
+      "website",
+      "deployment",
+      "profile",
+      "cybersecurity-tools"
+    ],
+    "updated": "2026-11-21 11:30"
+  },
+  "project_opwin_review_20261121": {
+    "text": "Code review of opwin.io on 2026-11-21 found the desktop OPWIN_HANDOFF.txt claims work that is NOT deployed. Server App.tsx (459 lines, /var/www/opwin.io/Opwin.io Website Backup/client/src/) has service-area dropdown but NO profile page/tool cards JSX (only orphan CSS). Profile JSX exists only in local C:\\Users\\ActOnline\\Documents\\Agent-Qwen\\opwin-dev\\App.tsx (491 lines) and is BROKEN: uses profile/setProfile with no useState declaration. Server registration still renders Owner option (backend forces customer). Keyword chatbot is live; the 9931 LLM integration was lost in the restore. server/email.ts is a console.log stub and /api/auth/register never calls it. DB has NO owner account, so owner-only endpoints are unreachable.",
+    "tags": [
+      "project",
+      "website",
+      "audit",
+      "opwin"
+    ],
+    "updated": "2026-11-21 11:59"
+  },
+  "project_opwin_decisions_20261121": {
+    "text": "Owner decisions for opwin.io: (1) All site notifications go to admin@opwin.io (Porkbun webmail, smtp.porkbun.com:587 STARTTLS; ports 587/465 open from VPS, 25 blocked). (2) Customer confirmation emails must be MINIMAL - just confirm the appointment exists, no consultation details; details viewable only after sign-in. (3) Direct/text scheduling rate is $300/hour everywhere - the $200 in site copy is wrong. Quote hourly 300, online pay hourly 500, pay flat 800. (4) Build an owner dashboard showing all customer-submitted DB data. (5) Keep the keyword chatbot for now; Mac LLM (llama.cpp/Liquid AI) not set up. (6) Customer dashboard = one-stop shop of ~20 free cybersecurity tools, client-side wherever possible, server-side lookups only when needed with scope disclosure and disclaimers. (7) Later: privacy-focused advertising/recommended tools on that page. (8) Needs rock-solid deployed privacy policies.",
+    "tags": [
+      "project",
+      "website",
+      "decisions",
+      "opwin"
+    ],
+    "updated": "2026-11-21 12:50"
+  },
+  "project_opwin_phase1_done": {
+    "text": "Phase 1 deployed to opwin.io on 2026-11-21. Canonical source is now C:\\Users\\ActOnline\\opwin-canonical (md5-matched to server; ignore the other ~10 scattered App.tsx copies). Done: nodemailer installed (--ignore-scripts required, else npm tries to rebuild better-sqlite3 and fails); real SMTP via smtp.porkbun.com:587 verified end-to-end; email.ts wired into routes.ts for booking/quote/registration/invoice to admin@opwin.io plus minimal no-detail customer confirmations; $200 copy corrected to $300 in 3 places; false privacy claim (\"details are not sent to Opwin.io\") corrected in App.tsx and schema.ts; new client/src/components/Dashboard.tsx with customer view (/api/me/requests) and owner view (/api/owner/overview); Owner removed from registration select. Backups: /home/ubuntu/backups/phase1-20261121-205438 and C:\\Users\\ActOnline\\opwin-backups\\phase1-20261121-205438. STILL BLOCKED: no owner account exists in the users table, so owner dashboard is unreachable until one is created with owner-chosen credentials.",
+    "tags": [
+      "project",
+      "website",
+      "opwin",
+      "deployed"
+    ],
+    "updated": "2026-11-21 14:11"
+  },
+  "user_communication_prefs": {
+    "text": "ActOnline wants plain English, no sugar-coating, no hedging about feelings. Uses voice-to-text (struggles with spelling, finds it embarrassing) so messages can look garbled — restate understanding before acting. Apologizes often; do not dwell on it.",
+    "tags": [
+      "preference",
+      "communication"
+    ],
+    "updated": "2026-11-21 16:26"
+  },
+  "opwin_layout_and_facts": {
+    "text": "Opwin.io: OVH VPS 15.204.112.117 (ubuntu, key C:\\Users\\ActOnline\\.ssh\\ai_agent_key), app at /var/www/opwin.io/Opwin.io Website Backup/, operator page /var/www/opwin-owner/. Local: C:\\Users\\ActOnline\\y = private GitHub clone (officialbhtinfo-sketch/y) containing the ONLY local .env at y\\opwin\\.env; C:\\Users\\ActOnline\\opwin-canonical = deploy source (no .env); C:\\Users\\ActOnline\\opwin-backups = backups incl. env.snapshot, 92MB webroot tarball, owner-credentials.txt.",
+    "tags": [
+      "project",
+      "opwin",
+      "paths"
+    ],
+    "updated": "2026-11-21 16:26"
+  },
+  "opwin_fixes_applied_20261122": {
+    "text": "On 2026-11-22 applied to opwin.io: (1) new SMTP_PASS in /var/www/opwin.io/Opwin.io Website Backup/.env — live send verified to admin@opwin.io; (2) app.set(\"trust proxy\",1) added at server/index.ts:11; (3) ownerAuthLimiter 5→10 at server/routes.ts:410; rebuilt via npm run build, service restarted. Backups on server: /home/ubuntu/opwin-backups/.env.pre-smtp-20261122-011419 and /home/ubuntu/opwin-backups/pre-fix23-20261122-012344 (has ROLLBACK.sh). App listens on port 5000 behind nginx.",
+    "tags": [
+      "opwin",
+      "changes",
+      "backups"
+    ],
+    "updated": "2026-11-21 17:31"
+  },
+  "project_opwin_session_bug_rootcause": {
+    "text": "opwin.io dashboards broken (Nov 22 2026): root cause proven — server/index.ts sets cookie.secure=true in production but never calls app.set('trust proxy',1), and nginx location / sends no X-Forwarded-Proto. express-session 1.19.0 index.js:242 silently skips Set-Cookie when secure && !issecure(req), so login returns 200 with no cookie; /api/owner/overview then 403 and /api/me/requests 401. Fix needs BOTH: app.set('trust proxy',1) in Express AND proxy_set_header X-Forwarded-Proto $scheme (+X-Forwarded-For) in nginx. Not a popup blocker.",
+    "tags": [
+      "opwin",
+      "bug",
+      "session",
+      "nginx",
+      "pending-fix"
+    ],
+    "updated": "2026-11-21 20:54"
+  },
+  "agent_qwen_python_interpreter": {
+    "text": "Agent-Qwen (C:\\Users\\ActOnline\\Documents\\Agent-Qwen\\main.py) runs on Python 3.15.2 arm64 at C:\\Users\\ActOnline\\AppData\\Local\\Python\\pythoncore-3.15-arm64\\python.exe — reachable as `py`, NOT as `python` (python on PATH is 3.11.9 in Program Files and is a different, unused environment). Always install with `py -m pip install ...` or the full 3.15 path. Fixed 2026-11-22: installed pyautogui 0.9.54 + Pillow 13.0.0 into 3.15.2 (pyautogui needs Pillow via pyscreeze or screenshot() raises PyAutoGUIException); agent.tools.dispatch('screenshot') now returns {'content','image_b64'} and works.",
+    "tags": [
+      "python",
+      "agent-qwen",
+      "environment",
+      "fixed"
+    ],
+    "updated": "2026-11-21 23:24"
+  },
+  "opwin_phase2A_built_not_deployed": {
+    "text": "Phase 2A of opwin.io built 2026-11-22 in C:\\Users\\ActOnline\\opwin-canonical but NOT deployed: 8 browser-only privacy tools in client/src/components/tools/ (PasswordStrength, FileHash, exif.ts+ExifViewer, BrowserFingerprint, WebRtcLeak, CookieInspector, BrokerGuide, IncidentPlaybook) + index.ts registry keyed by the exact Dashboard TOOLS names; Dashboard.tsx patched to render an Open button + tool panel (state `tool`, ActiveTool) and index.css got a .tool-* block incl. an input[type=checkbox] reset. Verified: tsc --strict clean, EXIF read/strip proven on a synthetic big-endian JPEG, esbuild preview harness at C:\\Users\\ActOnline\\opwin-backups\\tscheck\\preview\\index.html. Backup of pre-change Dashboard.tsx+index.css: C:\\Users\\ActOnline\\opwin-backups\\phase2A-20261121-225320. Still pending owner OK: deploy to VPS, and sync the missing app.set('trust proxy',1) line into canonical/server/index.ts (live server has it, canonical does not — deploying from canonical without it re-breaks login).",
+    "tags": [
+      "opwin",
+      "phase2A",
+      "built",
+      "not-deployed",
+      "pending-approval"
+    ],
+    "updated": "2026-11-21 23:24"
+  },
+  "opwin_phase2A_deployed": {
+    "text": "Supersedes opwin_phase2A_built_not_deployed. Phase 2A deployed to opwin.io on 2026-11-22: 8 browser-only privacy tools live in the customer dashboard (Password strength, File hash, EXIF viewer, Browser fingerprint, WebRTC leak, Cookie inspector, Data broker guide, Incident playbook). Canonical C:\\Users\\ActOnline\\opwin-canonical is now a true superset of production: it absorbed the 3 production-only fixes (app.set('trust proxy',1) in server/index.ts, nodemailer ^10.6.1 in package.json, ownerAuthLimiter 10 in routes.ts) and gained the previously missing script/build.ts + script/backup.ts. Fixed 3 TS2802 errors (iterator spread under default ES5 target) in CookieInspector.tsx, WebRtcLeak.tsx, exif.ts by switching to Array.from / index loop; npx tsc --noEmit now exits 0. Deploy method that worked: scp changed client files to VPS, npm run build on VPS (it has node_modules; canonical has none), sudo systemctl restart opwin.service. Verified live: HTTPS 200, Set-Cookie present on login (session fix intact), /api/me/requests 200, /api/owner/overview 403 for customer and 401 anon, operator page 200. Backups: /home/ubuntu/opwin-backups/phase2-pre-20261122-122555 (ROLLBACK.sh, app-src.tgz, dist.tgz, data.db, dot.env) and C:\\Users\\ActOnline\\opwin-backups\\phase2-predeploy-20261122-042519. Owner account admin@opwin.io role=owner DOES exist in users table (old blocked note is obsolete). REMAINING (phase 2B): 8 of 16 dashboard tools still show \"Coming soon\" and need server-side endpoints - What is my IP, DNS leak test, Email breach lookup, Password exposure check, Security headers/TLS check, Email auth (SPF/DKIM/DMARC), Redirect tracer, Link reputation.",
+    "tags": [
+      "opwin",
+      "phase2A",
+      "deployed",
+      "website"
+    ],
+    "updated": "2026-11-22 04:59"
+  },
+  "opwin_phase2b_decisions": {
+    "text": "Opwin.io phase 2B scope decisions (owner, 2026-11-22): REDIRECT TRACER is DROPPED — owner does not want the VPS fetching user-supplied URLs (SSRF risk). Security-headers/TLS check is also on the drop list for the same reason. Owner's main concerns: (a) which lookups need a paid API key and what the key provider can see, (b) not disclosing data sources to customers is NOT acceptable — I advised against it and owner seemed to agree, (c) interested in offering lookups through the future chatbot. Owner also floated giving the chatbot their login credentials for background-check/data-broker sites to auto-strip listings — I advised against storing customer credentials (ToS + liability + contradicts anonymity positioning). New business idea owner wants explored: premium managed-AI service — configure and maintain a private AI per client, delivered as files or on a small single-board computer, accessed over the internet, hosted by us.",
+    "tags": [
+      "opwin",
+      "phase2b",
+      "decisions",
+      "scope"
+    ],
+    "updated": "2026-11-22 05:37"
+  },
+  "opwin_phase2b_done": {
+    "text": "Opwin.io phase 2B shipped 2026-11-22. Added PasswordExposure.tsx: browser-side SHA-1 via crypto.subtle, fetches https://api.pwnedpasswords.com/range/{5-char prefix} directly from the browser (endpoint returns Access-Control-Allow-Origin: *, no API key, no cost, server never involved, password never leaves the tab). Required a production nginx CSP change: connect-src 'self' -> connect-src 'self' https://api.pwnedpasswords.com (nginx -t validated before reload; backup /home/ubuntu/opwin-backups/nginx-opwin.io.pre-csp-20261122-135310). Per owner decision all skipped tools were REMOVED from the Dashboard TOOLS list entirely and no \"Coming soon\" placeholders remain: gone are What is my IP, DNS leak test, Email breach lookup, Security headers/TLS check, Email auth SPF/DKIM/DMARC, Redirect tracer, Link reputation. Customer dashboard now shows exactly 9 live tools. Live bundle index-DXyF4IFy.js verified: 0 occurrences of \"Coming soon\"/\"DNS leak\"/\"Email breach\"/\"Redirect tracer\". HIBP facts: Pwned Passwords range API free and keyless; email/breach account lookups need a paid key (~$3.50-5.29/mo, 10 rpm).",
+    "tags": [
+      "opwin",
+      "phase2b",
+      "deployed",
+      "hibp",
+      "csp"
+    ],
+    "updated": "2026-11-22 05:55"
+  },
+  "opwin_ui_tweaks_20261122": {
+    "text": "Opwin.io UI pass deployed 2026-11-22 (bundle index-NbFojAJn.js / index-DxcM2n5i.css). (1) Dashboard modal: when a tool is open, both the top X and the bottom button now return to the tools grid instead of closing the whole dashboard (bottom button relabels to \"Back to all tools\"). (2) Header nav unified: new .header-item class is the single style for every entry (same font-size var(--text-sm), weight 400, no underline); removed the border-bottom on .header nav a and the 3px double underline + var(--text-lg)/700 from .service-label; Dashboard/Sign in/Sign out moved inside <nav> and switched off .text-link so they match \"Request a quote\" exactly. Mobile rule changed from .header nav>button{display:none} to .header nav>button[data-testid=\"button-contact\"]{display:none} so auth buttons stay reachable on phones. (3) Nav group nudged left via .header nav{margin-right:var(--space-10)}; calendar/booking column nudged left via .main-grid gap var(--space-16)->var(--space-10). (4) New WindowMark SVG logo in App.tsx (window with one sash swung open, stroke=currentColor) colored with var(--accent) via .brand-mark; .wordmark made flex and its selector changed from >span:first-child to >span so \".io\" stays weight 400 now that the SVG is the first child. Pre-change copies of App.tsx/index.css/Dashboard.tsx: C:\\Users\\ActOnline\\opwin-backups\\phase2-predeploy-20261122-042519\\pre-ui-tweaks. Owner has not yet visually confirmed the two nudges or the logo design.",
+    "tags": [
+      "opwin",
+      "ui",
+      "deployed",
+      "logo",
+      "css"
+    ],
+    "updated": "2026-11-22 06:19"
+  },
+  "agent_qwen_folder": {
+    "text": "Agent-Qwen project at C:\\Users\\ActOnline\\Documents\\Agent-Qwen (Python agent: main.py, agent/loop.py, agent/memories.json with its own long-term memory, opwin-dev/ subfolder with local App.tsx + index.css copies). Its memories.json mirrors opwin.io project history incl. the service-areas dropdown animation notes.",
+    "tags": [
+      "project",
+      "agent",
+      "opwin",
+      "notes"
+    ],
+    "updated": "2026-11-22 18:21"
+  },
+  "agent_bulletin_board": {
+    "text": "Shared agent bulletin board at C:\\Users\\ActOnline\\Agent-Board\\BOARD.md for coordinating between me (Opwin-Agent) and Agent-Qwen on opwin.io work, so the user isn't the relay. Format: a STATUS section (current truth: project/task/owner/state/last-update) plus an append-only MESSAGES section (entries as \"### date time [AgentName]\"). Read it before starting opwin.io work; update STATUS and append messages as I go. Created 2026-11-22.",
+    "tags": [
+      "opwin",
+      "coordination",
+      "agent-qwen",
+      "workflow"
+    ],
+    "updated": "2026-11-22 22:18"
+  },
+  "work_protocol_confirm_checkin": {
+    "text": "User work protocol (stated 2026-11-23, refined): (1) Before starting any task, present the plan and wait for explicit approval. (2) HARD STOP every 30 minutes on the clock (12:00, 12:30, 1:00, 1:30...): stop all tool use, give a status report (what's done, what's next, file/backup state), and wait for the user — the user may need to shut down the computer, so every stop point must be safe (no half-finished changes, backups in place). I cannot fire proactive timer messages (I only run when the user messages), so I check the clock at each step and stop as soon as a 30-min mark is reached or imminent.",
+    "tags": [
+      "preference",
+      "workflow",
+      "opwin",
+      "safety"
+    ],
+    "updated": "2026-11-23 12:13"
+  }
+}

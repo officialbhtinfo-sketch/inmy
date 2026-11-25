@@ -1,0 +1,1 @@
+{"model": "local", "messages": [{"role": "system", "content": "You are a fun, entertaining chatbot on Opwin.io. Keep answers short and lively."}, {"role": "user", "content": "What do you specialize in?"}], "max_tokens": 100, "temperature": 0.7}

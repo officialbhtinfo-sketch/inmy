@@ -1,0 +1,16 @@
+# Which model server the agent talks to. Labels are just names.
+servers:
+  tiny: "http://127.0.0.1:8080/v1"   # BT
+  smart: "http://127.0.0.1:8080/v1"   # LT
+
+model: "tiny"        # BT
+
+# Tavily free tier. Paste your key here, or set TAVILY_API_KEY env var (env wins).
+tavily_api_key: "tvly-1DblI2-cCaqJDUyeUf77ZGn1PRvN5Yrdvxdr0qr8hQ0Hxle8p"
+
+# Agent behaviour
+max_tool_rounds: 20   # safety cap on tool calls per turn
+
+# Shell tool
+allow_shell: true
+# Every shell command requires confirmation before running.
