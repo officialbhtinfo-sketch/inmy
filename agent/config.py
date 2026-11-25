@@ -22,6 +22,6 @@ def init(path: str = CFG_PATH) -> dict:
 
     env_key = os.environ.get("TAVILY_API_KEY")
     if env_key:
-        CFG["tavily_api_key"] = env_key   # was: CFG["tvly-4aD8..."] = env_key
+        CFG["tavily_api_key"] = env_key
 
     return CFG

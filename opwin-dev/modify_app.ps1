@@ -1,4 +1,4 @@
-$path = "C:\Users\ActOnline\Documents\Agent-Nemo\opwin-dev\App.tsx"
+$path = Join-Path $PSScriptRoot "App.tsx"
 $content = Get-Content -Path $path -Raw
 
 # Step 1: Add LLM_API_BASE constant after faqs array

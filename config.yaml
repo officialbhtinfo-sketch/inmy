@@ -6,7 +6,7 @@ servers:
 model: "tiny"        # BT
 
 # Tavily free tier. Paste your key here, or set TAVILY_API_KEY env var (env wins).
-tavily_api_key: "tvly-1DblI2-cCaqJDUyeUf77ZGn1PRvN5Yrdvxdr0qr8hQ0Hxle8p"
+tavily_api_key: ""   # Set via TAVILY_API_KEY env var; do not commit a real key
 
 # Agent behaviour
 max_tool_rounds: 20   # safety cap on tool calls per turn

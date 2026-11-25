@@ -1,4 +1,5 @@
-﻿with open(r"C:\Users\ActOnline\Documents\Agent-Nemo\opwin-dev\App.tsx", "r", encoding="utf-8") as f:
+import os
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "App.tsx"), "r", encoding="utf-8") as f:
     content = f.read()
 print('profile state:', 'profile' in content)
 print('setProfile(true):', 'setProfile(true)' in content)

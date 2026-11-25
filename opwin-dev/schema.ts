@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
-// Private preview only. No customer information is persisted or transmitted.
+// NOTE: This schema persists customer data (name, email, phone, city, issue) to SQLite tables (bookings, quotes, payment_invoices, users). User-facing claims of privacy must reflect actual persistence.
 export const consultationSchema = z.object({
   name: z.string().trim().min(2, "Please enter your name.").max(100),
   email: z.string().trim().email("Please enter a valid email address.").max(200),

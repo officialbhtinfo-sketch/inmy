@@ -1,5 +1,6 @@
-﻿import sys
-path = r"C:\Users\ActOnline\Documents\Agent-Nemo\opwin-dev\App.tsx"
+import os
+import sys
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "App.tsx")
 with open(path, "r", encoding="utf-8") as f:
     content = f.read()
 

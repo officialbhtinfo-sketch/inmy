@@ -294,7 +294,7 @@ return (
                   <FormField control={form.control} name="location" render={({ field }) => <FormItem className="form-block"><FormLabel>Where do you need help?</FormLabel><FormControl><select {...field} data-testid="select-location"><option value="california">California</option><option value="elsewhere">Outside California</option></select></FormControl><FormMessage /></FormItem>} />
                   {outOfState && <div className="inline-notice" role="status">Out-of-state consultations must be arranged by text first. You can review your inquiry here, but you cannot book or pay online.</div>}
                   <FormField control={form.control} name="issue" render={({ field }) => <FormItem className="form-block"><FormLabel>What would you like help with?</FormLabel><FormControl><textarea {...field} rows={4} maxLength={1500} placeholder="Describe the issue, the devices involved, and what you’d like to achieve." data-testid="input-issue" /></FormControl><FormMessage /></FormItem>} />
-                  <p className="privacy-note">Please don’t include passwords or sensitive files. These preview details stay in this page and are not sent to Opwin.io.</p>
+                  <p className="privacy-note">Please don’t include passwords or sensitive files. Your details are submitted to Opwin.io’s backend to be reviewed and stored, per the project’s privacy policy.</p>
                   <button type="submit" className="primary-button" data-testid="button-review">{outOfState || mode === "quote" ? "Review your inquiry" : "Review your appointment"}<ArrowRight size={18} /></button>
                 </form></Form>
               </>
