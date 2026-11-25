@@ -1,12 +1,15 @@
-# Which model server the agent talks to. Labels are just names.
+# Which model server the agent talks to.
+# tiny = main model; smart = speculative decoding model on a separate server.
+# TODO: set `smart` to the speculative decoding server's URL (not yet confirmed —
+#       port may be 8008 or 8001, needs verification against the actual server).
 servers:
-  tiny: "http://127.0.0.1:8080/v1"   # BT
-  smart: "http://127.0.0.1:8080/v1"   # LT
+  tiny: "http://127.0.0.1:8080/v1"   # main model
+  smart: "http://127.0.0.1:8080/v1"   # speculative decoding — placeholder, needs real URL
 
-model: "tiny"        # BT
+model: "tiny"
 
-# Tavily free tier. Paste your key here, or set TAVILY_API_KEY env var (env wins).
-tavily_api_key: ""   # Set via TAVILY_API_KEY env var; do not commit a real key
+# Tavily free tier. Set TAVILY_API_KEY env var (env wins); do not commit a real key.
+tavily_api_key: ""
 
 # Agent behaviour
 max_tool_rounds: 20   # safety cap on tool calls per turn
