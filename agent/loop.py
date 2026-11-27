@@ -1,6 +1,8 @@
 import json
 from openai import OpenAI
 from .tools import TOOLS, dispatch
+from . import logger as agent_logger
+from . import approval as approval_module
 
 
 def make_client(base_url: str) -> OpenAI:
@@ -15,8 +17,15 @@ def model_id(client: OpenAI) -> str:
         return "local"
 
 
-def run_turn(client, model, messages, max_rounds=12) -> str:
-    """Run one user turn, allowing the model to call tools when needed."""
+def run_turn(client, model, messages, max_rounds=12, log=None, approval=None) -> str:
+    """Run one user turn, allowing the model to call tools when needed.
+
+    `log` (AgentLogger) records every action and streams it in real time.
+    `approval` (ApprovalManager) gates state-changing tools to a 30-minute
+    permission window. When omitted, sensible defaults are created.
+    """
+    log = log or agent_logger.AgentLogger()
+    approval = approval or approval_module.approval
 
     # Add the instruction once, without duplicating it on future turns.
     if not any(message.get("role") == "system" for message in messages):
@@ -44,10 +53,14 @@ def run_turn(client, model, messages, max_rounds=12) -> str:
 
         msg = resp.choices[0].message
 
+        # Log + stream the model's reasoning/message before acting on it.
+        log.log_model_message(getattr(msg, "role", None) or "assistant", msg.content or "", msg.tool_calls)
+
         # No tool calls: the model has given its final answer.
         if not msg.tool_calls:
             answer = msg.content or ""
             messages.append({"role": "assistant", "content": answer})
+            log.log("final_answer", {"content": answer})
             return answer
 
         messages.append(msg)
@@ -61,14 +74,19 @@ def run_turn(client, model, messages, max_rounds=12) -> str:
             except json.JSONDecodeError:
                 args = {}
 
-            print(f"  -> {name} {json.dumps(args, ensure_ascii=False)[:200]}")
+            log.log_tool_call(name, args)
 
             try:
                 if not isinstance(args, dict):
                     raise ValueError("Tool arguments must be a JSON object")
                 result = dispatch(name, args)
+                ok = True
             except Exception as exc:
                 result = {"content": f"Tool {name} failed: {exc}"}
+                ok = False
+                log.log_error(name, exc)
+
+            log.log_tool_result(name, result, ok=ok)
 
             messages.append(
                 {
@@ -102,4 +120,5 @@ def run_turn(client, model, messages, max_rounds=12) -> str:
 
     answer = "[stopped: hit max tool rounds]"
     messages.append({"role": "assistant", "content": answer})
+    log.log("max_rounds_reached", {})
     return answer

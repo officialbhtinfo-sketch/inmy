@@ -3,6 +3,7 @@ from .web_fetch import web_fetch
 from .screenshot import screenshot
 from .shell import shell
 from .memory import memory_save, memory_search, memory_list
+from .. import approval
 from .. import config
 
 TOOLS = [
@@ -64,15 +65,14 @@ def dispatch(name: str, args: dict) -> dict:
         if not config.CFG.get("allow_shell", False):
             return {"content": "Shell tool is disabled (allow_shell: false in config.yaml)."}
         cmd = args.get("command", "")
-        # Shell parsing permits chaining, substitutions and redirection, so a
-        # first-token allowlist cannot establish that a command is safe.
-        print(f"\n  ! SHELL COMMAND NEEDS YOUR OK:\n     {cmd}")
-        try:
-            approved = input("  Run it? [y/N] ").strip().lower() == "y"
-        except (EOFError, KeyboardInterrupt):
-            approved = False
-        if not approved:
-            return {"content": "The user refused to run this command. Do not retry it; ask what they would like instead."}
+        # Gate shell on the 30-minute approval window: one user OK covers the
+        # agent for the next 30 minutes of autonomous action.
+        if not approval.is_approved():
+            granted = approval.request_approval(
+                f"Agent wants to run a shell command:\n    {cmd}\nApprove for the next 30 minutes? [y/N] "
+            )
+            if not granted:
+                return {"content": "The user refused to run this command. Do not retry it; ask what they would like instead."}
         return {"content": shell(cmd)}
     if name == "memory_save":
         return {"content": memory_save(args.get("key", ""), args.get("text", ""), args.get("tags") or [])}

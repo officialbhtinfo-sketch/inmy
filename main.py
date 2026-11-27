@@ -8,6 +8,8 @@ except Exception:
 from agent.config import init
 from agent import loop
 from agent.tools import TOOLS
+from agent import logger as agent_logger
+from agent import approval as approval_module
 
 SYSTEM_PROMPT = """
 
@@ -53,7 +55,15 @@ def main():
     if not cfg.get("tavily_api_key") or "PASTE" in str(cfg.get("tavily_api_key", "")):
         print("! tavily_api_key not set in config.yaml - web_search will fail until you add it.")
     print(f"Agent ready - {model} @ {base_url}")
-    print("Commands: /new = reset conversation, /tools = list tools, exit = quit\n")
+    print("Commands: /new = reset conversation, /tools = list tools, /approve = grant 30-minute permission, exit = quit\n")
+
+    log = agent_logger.AgentLogger(
+        stream_to_console=bool(cfg.get("stream_to_console", True)),
+    )
+    approval = approval_module.approval
+    interval_minutes = cfg.get("approval_interval_minutes")
+    if interval_minutes:
+        approval.interval_seconds = int(interval_minutes) * 60
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     while True:
@@ -74,8 +84,17 @@ def main():
             for t in TOOLS:
                 print(f"  {t['function']['name']}: {t['function']['description']}")
             continue
+        if user == "/approve":
+            granted = approval.request_approval("Grant the agent 30 minutes of autonomous permission? [y/N] ")
+            log.log_approval(granted)
+            print("Permission granted for 30 minutes." if granted else "Permission not granted.")
+            continue
+        if user == "/status":
+            rem = approval.time_remaining()
+            print(f"Approval: {'active' if approval.is_approved() else 'inactive'} (approx {rem}s remaining)")
+            continue
         messages.append({"role": "user", "content": user})
-        answer = loop.run_turn(client, model, messages, cfg.get("max_tool_rounds", 12))
+        answer = loop.run_turn(client, model, messages, cfg.get("max_tool_rounds", 12), log=log, approval=approval)
         print(f"\nagent> {answer}\n")
 
 if __name__ == "__main__":

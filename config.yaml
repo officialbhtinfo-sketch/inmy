@@ -16,3 +16,13 @@ max_tool_rounds: 20   # safety cap on tool calls per turn
 # Shell tool
 allow_shell: true
 # Every shell command requires confirmation before running.
+
+# Agent autonomy / permissions
+# Approval is valid for this many minutes; after that the agent must ask again.
+approval_interval_minutes: 30
+
+# Logging / streaming
+log_dir: "logs"
+stream_to_console: true
+# Log every model message + tool call as JSON lines for audit/replay.
+log_events: true
