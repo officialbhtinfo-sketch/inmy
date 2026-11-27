@@ -12,6 +12,8 @@ tavily_api_key: ""
 
 # Agent behaviour
 max_tool_rounds: 20   # safety cap on tool calls per turn
+max_consecutive_tool_calls: 5   # human checkpoint after N tool calls without answer
+human_checkpoint_enabled: true
 
 # Shell tool
 allow_shell: true

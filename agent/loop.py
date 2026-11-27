@@ -3,6 +3,7 @@ from openai import OpenAI
 from .tools import TOOLS, dispatch
 from . import logger as agent_logger
 from . import approval as approval_module
+from agent import config as agent_config
 
 
 def make_client(base_url: str) -> OpenAI:
@@ -17,15 +18,20 @@ def model_id(client: OpenAI) -> str:
         return "local"
 
 
-def run_turn(client, model, messages, max_rounds=12, log=None, approval=None) -> str:
+def run_turn(client, model, messages, max_rounds=12, log=None, approval=None, cfg=None) -> str:
     """Run one user turn, allowing the model to call tools when needed.
 
     `log` (AgentLogger) records every action and streams it in real time.
     `approval` (ApprovalManager) gates state-changing tools to a 30-minute
-    permission window. When omitted, sensible defaults are created.
+    permission window. `cfg` supplies runtime behaviour overrides.
     """
     log = log or agent_logger.AgentLogger()
     approval = approval or approval_module.approval
+    cfg = cfg or agent_config.CFG
+
+    max_consecutive = int(cfg.get("max_consecutive_tool_calls", 5))
+    consecutive_tool_count = 0
+    recent_shell_commands = []
 
     # Add the instruction once, without duplicating it on future turns.
     if not any(message.get("role") == "system" for message in messages):
@@ -58,10 +64,25 @@ def run_turn(client, model, messages, max_rounds=12, log=None, approval=None) ->
 
         # No tool calls: the model has given its final answer.
         if not msg.tool_calls:
+            consecutive_tool_count = 0
             answer = msg.content or ""
             messages.append({"role": "assistant", "content": answer})
             log.log("final_answer", {"content": answer})
             return answer
+
+        consecutive_tool_count += 1
+
+        # Human checkpoint: stop after N consecutive tool calls without answer.
+        if consecutive_tool_count >= max_consecutive:
+            log.log("human_checkpoint", {"reason": "consecutive_tool_limit", "count": consecutive_tool_count})
+            print(f"\n! Agent has invoked {consecutive_tool_count} tools consecutively without a textual answer.")
+            try:
+                proceed = input("  Continue autonomous execution? [y/N] ").strip().lower() == "y"
+            except (EOFError, KeyboardInterrupt):
+                proceed = False
+            if not proceed:
+                return "[stopped: user halted at consecutive-tool checkpoint]"
+            consecutive_tool_count = 0
 
         messages.append(msg)
 
@@ -75,6 +96,22 @@ def run_turn(client, model, messages, max_rounds=12, log=None, approval=None) ->
                 args = {}
 
             log.log_tool_call(name, args)
+
+            # Repeat command detection for shell: halt on identical prior command.
+            if name == "shell":
+                cmd = args.get("command", "")
+                if cmd in recent_shell_commands[-3:]:
+                    log.log("human_checkpoint", {"reason": "repeated_shell_command", "command": cmd})
+                    print(f"\n! Agent is repeating a shell command: {cmd}")
+                    try:
+                        proceed = input("  Allow repeated execution? [y/N] ").strip().lower() == "y"
+                    except (EOFError, KeyboardInterrupt):
+                        proceed = False
+                    if not proceed:
+                        return "[stopped: user halted on repeated shell command]"
+                recent_shell_commands.append(cmd)
+                if len(recent_shell_commands) > 10:
+                    recent_shell_commands.pop(0)
 
             try:
                 if not isinstance(args, dict):
